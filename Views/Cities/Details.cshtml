@@ -4,27 +4,34 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>C'est parti pour @Model.Name !</h1>
+<h2>Voici les hôtels disponibles</h2>
 
 <div>
-    <h4>City</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Country)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Country)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.CityId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @foreach (Hotel hotel in Model.Hotels)
+    {
+    <div class="card" style="width: 18rem;">
+        @if (!string.IsNullOrEmpty(hotel.PicUrl))
+        {
+            <img class="card-img-top" src="@hotel.PicUrl" alt="">
+        }
+        <div class="card-body">
+            <h5 class="card-title">@hotel.Name</h5>
+            <div>
+                @for (var i = 0; i < 5; i++)
+                {
+                    if (i >= hotel.Stars)
+                    {
+                        <img alt="étoile vide" src="~/icons/emptyStar.svg" />
+                    }
+                    else
+                    {
+                        <img alt="étoile pleine" src="~/icons/yellowStar.svg" />
+                    }
+                }
+            </div>
+            <a asp-action="Details" asp-controller="Hotels" asp-route-id="@hotel.HotelId">Détails</a>
+        </div>
+    </div>
+    }
 </div>

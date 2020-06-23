@@ -14,6 +14,9 @@ namespace evaluation1.Models
         [Display(Name = "Nom")]
         public string Name { get; set; }
 
+        [Display(Name = "Photo")]
+        public string PicUrl { get; set; }
+
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Téléphone")]
         public string Phone { get; set; }
@@ -34,9 +37,11 @@ namespace evaluation1.Models
         public int CityId { get; set; }
         public City City { get; set; }
 
+        [Range(0, 5, ErrorMessage = "La valeur doit ête entre 0 et 5.")]
         [Display(Name = "Etoiles")]
-        public int Stars { get; set; }
+        public int Stars { get; set; } = 0;
 
+        [Required(ErrorMessage = "Veuillez indiquer le nombre de chambres de l'hôtel.")]
         [Display(Name = "Chambres")]
         public int Rooms { get; set; }
     }

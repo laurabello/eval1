@@ -8,24 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using evaluation1.Data;
 using evaluation1.Models;
 
-namespace evaluation1
+namespace evaluation1.Controllers
 {
-    public class CitiesController : Controller
+    public class HotelsController : Controller
     {
         private readonly Eval1DbContext _context;
 
-        public CitiesController(Eval1DbContext context)
+        public HotelsController(Eval1DbContext context)
         {
             _context = context;
         }
 
-        // GET: Cities
+        // GET: Hotels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cities.ToListAsync());
+            var eval1DbContext = _context.Hotels.Include(h => h.City);
+            return View(await eval1DbContext.ToListAsync());
         }
 
-        // GET: Cities/Details/5
+        // GET: Hotels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,40 +34,42 @@ namespace evaluation1
                 return NotFound();
             }
 
-            var city = await _context.Cities
-                .Include(c => c.Hotels)
-                .FirstOrDefaultAsync(m => m.CityId == id);
-            if (city == null)
+            var hotel = await _context.Hotels
+                .Include(h => h.City)
+                .FirstOrDefaultAsync(m => m.HotelId == id);
+            if (hotel == null)
             {
                 return NotFound();
             }
 
-            return View(city);
+            return View(hotel);
         }
 
-        // GET: Cities/Create
+        // GET: Hotels/Create
         public IActionResult Create()
         {
+            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "Name");
             return View();
         }
 
-        // POST: Cities/Create
+        // POST: Hotels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CityId,Name,Country")] City city)
+        public async Task<IActionResult> Create([Bind("HotelId,Name,Phone,Email,Adress1,Adress2,CityId,Stars,Rooms")] Hotel hotel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(city);
+                _context.Add(hotel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(city);
+            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "Name", hotel.CityId);
+            return View(hotel);
         }
 
-        // GET: Cities/Edit/5
+        // GET: Hotels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +77,23 @@ namespace evaluation1
                 return NotFound();
             }
 
-            var city = await _context.Cities.FindAsync(id);
-            if (city == null)
+            var hotel = await _context.Hotels.FindAsync(id);
+            if (hotel == null)
             {
                 return NotFound();
             }
-            return View(city);
+            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "Name", hotel.CityId);
+            return View(hotel);
         }
 
-        // POST: Cities/Edit/5
+        // POST: Hotels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CityId,Name,Country")] City city)
+        public async Task<IActionResult> Edit(int id, [Bind("HotelId,Name,Phone,Email,Adress1,Adress2,CityId,Stars,Rooms")] Hotel hotel)
         {
-            if (id != city.CityId)
+            if (id != hotel.HotelId)
             {
                 return NotFound();
             }
@@ -98,12 +102,12 @@ namespace evaluation1
             {
                 try
                 {
-                    _context.Update(city);
+                    _context.Update(hotel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CityExists(city.CityId))
+                    if (!HotelExists(hotel.HotelId))
                     {
                         return NotFound();
                     }
@@ -114,10 +118,11 @@ namespace evaluation1
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(city);
+            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "Name", hotel.CityId);
+            return View(hotel);
         }
 
-        // GET: Cities/Delete/5
+        // GET: Hotels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,30 +130,31 @@ namespace evaluation1
                 return NotFound();
             }
 
-            var city = await _context.Cities
-                .FirstOrDefaultAsync(m => m.CityId == id);
-            if (city == null)
+            var hotel = await _context.Hotels
+                .Include(h => h.City)
+                .FirstOrDefaultAsync(m => m.HotelId == id);
+            if (hotel == null)
             {
                 return NotFound();
             }
 
-            return View(city);
+            return View(hotel);
         }
 
-        // POST: Cities/Delete/5
+        // POST: Hotels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var city = await _context.Cities.FindAsync(id);
-            _context.Cities.Remove(city);
+            var hotel = await _context.Hotels.FindAsync(id);
+            _context.Hotels.Remove(hotel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CityExists(int id)
+        private bool HotelExists(int id)
         {
-            return _context.Cities.Any(e => e.CityId == id);
+            return _context.Hotels.Any(e => e.HotelId == id);
         }
     }
 }

@@ -10,6 +10,6 @@
 <section class="container">
     @foreach(City city in Model)
     {
-        <a class="btn btn-light" asp-action="index" asp-controller="hotel">@city.Name</a>
+        <a class="btn btn-light" asp-action="Details" asp-controller="Cities" asp-route-id="@city.CityId">@city.Name</a>
     }
 </section>
