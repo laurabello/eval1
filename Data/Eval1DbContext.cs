@@ -9,14 +9,17 @@ namespace evaluation1.Data
 {
     public class Eval1DbContext : IdentityDbContext
     {
-        public Eval1DbContext(DbContextOptions<Eval1DbContext> options)
-            : base(options)
-        {
-        }
+        /*        public Eval1DbContext(DbContextOptions<Eval1DbContext> options)
+                    : base(options)
+                {
+                }
+        */
 
-        DbSet<Hotel> Hotels { get; set; }
-        DbSet<City> Cities { get; set; }
-        DbSet<Room> Rooms { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=evaluation1;Trusted_Connection=True;MultipleActiveResultSets=true"); 
+
+        public DbSet<Hotel> Hotels { get; set; }
+        public DbSet<City> Cities { get; set; }
 
     }
 }

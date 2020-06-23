@@ -3,21 +3,19 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using evaluation1.Data;
 
-namespace evaluation1.Data.Migrations
+namespace evaluation1.Migrations
 {
     [DbContext(typeof(Eval1DbContext))]
-    [Migration("20200623094613_InitialMigration")]
-    partial class InitialMigration
+    partial class Eval1DbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -270,6 +268,9 @@ namespace evaluation1.Data.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Rooms")
+                        .HasColumnType("int");
+
                     b.Property<int>("Stars")
                         .HasColumnType("int");
 
@@ -278,26 +279,6 @@ namespace evaluation1.Data.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Hotels");
-                });
-
-            modelBuilder.Entity("evaluation1.Models.Room", b =>
-                {
-                    b.Property<int>("RoomId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Available")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("HotelId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RoomId");
-
-                    b.HasIndex("HotelId");
-
-                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -356,15 +337,6 @@ namespace evaluation1.Data.Migrations
                     b.HasOne("evaluation1.Models.City", "City")
                         .WithMany("Hotels")
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("evaluation1.Models.Room", b =>
-                {
-                    b.HasOne("evaluation1.Models.Hotel", "Hotel")
-                        .WithMany()
-                        .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

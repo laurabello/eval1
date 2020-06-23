@@ -37,5 +37,7 @@ namespace evaluation1.Models
         [Display(Name = "Etoiles")]
         public int Stars { get; set; }
 
+        [Display(Name = "Chambres")]
+        public int Rooms { get; set; }
     }
 }
