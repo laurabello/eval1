@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using evaluation1.Models;
+using Microsoft.AspNetCore.Identity;
 using evaluation1.Data;
 
 namespace evaluation1.Controllers
@@ -14,6 +15,7 @@ namespace evaluation1.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly Eval1DbContext _context;
+
 
         public HomeController(ILogger<HomeController> logger, Eval1DbContext eval1DbContext)
         {

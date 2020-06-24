@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using evaluation1.Data;
 using evaluation1.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace evaluation1.Controllers
 {
@@ -70,6 +71,8 @@ namespace evaluation1.Controllers
         }
 
         // GET: Hotels/Edit/5
+        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)

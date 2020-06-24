@@ -29,6 +29,7 @@ namespace evaluation1
         {
             services.AddDbContext<Eval1DbContext>();
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<Eval1DbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();

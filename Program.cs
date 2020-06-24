@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using evaluation1.Data;
 using evaluation1.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace evaluation1
 {
@@ -15,9 +17,10 @@ namespace evaluation1
     {
         public static void Main(string[] args)
         {
-/*            SeedCities();
-            SeedHotels();
-*/            CreateHostBuilder(args).Build().Run();
+            //SeedCities();
+            //SeedHotels();
+            //SeedRole();
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -69,5 +72,15 @@ namespace evaluation1
             }
         }
 
+        public static void SeedRole()
+        {
+            using (var db = new Eval1DbContext())
+            {
+                var admin = new IdentityRole { Name = "Admin" };
+
+                db.Add(admin);
+                db.SaveChanges();
+            }
+        }
     }
 }
