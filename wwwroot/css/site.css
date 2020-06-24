@@ -69,3 +69,17 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.stars {
+    width: 2rem;
+}
+
+
+legend {
+    width: auto;
+}
+
+input[type=submit], input[type=file] {
+    border: none;
+    background: transparent;
+}

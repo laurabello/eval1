@@ -1,33 +1,33 @@
 ﻿@model evaluation1.Models.Hotel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Modifier";
 }
 
-<h1>Edit</h1>
+<h1>Modifier @Model.Name</h1>
 
-<h4>Hotel</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="HotelId" />
+    <form enctype="multipart/form-data" asp-action="Edit" class="col-9">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="HotelId" />
+        <div class="form-group">
+            <input type="hidden" asp-for="CityId" class="form-control" />
+        </div>
+        <fieldset class="p-2 border border-secondary">
+            <legend class="w-auto">Identité</legend>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
+                <label asp-for="Stars" class="control-label"></label>
+                <input asp-for="Stars" class="form-control" />
+                <span asp-validation-for="Stars" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+        </fieldset>
+        <fieldset class="p-2 border border-secondary">
+            <legend class="w-auto">Adresse</legend>
             <div class="form-group">
                 <label asp-for="Adress1" class="control-label"></label>
                 <input asp-for="Adress1" class="form-control" />
@@ -38,30 +38,52 @@
                 <input asp-for="Adress2" class="form-control" />
                 <span asp-validation-for="Adress2" class="text-danger"></span>
             </div>
+        </fieldset>
+        <fieldset class="p-2 border border-secondary">
+            <legend class="w-auto">Contact</legend>
             <div class="form-group">
-                <label asp-for="CityId" class="control-label"></label>
-                <select asp-for="CityId" class="form-control" asp-items="ViewBag.CityId"></select>
-                <span asp-validation-for="CityId" class="text-danger"></span>
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Stars" class="control-label"></label>
-                <input asp-for="Stars" class="form-control" />
-                <span asp-validation-for="Stars" class="text-danger"></span>
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Rooms" class="control-label"></label>
-                <input asp-for="Rooms" class="form-control" />
-                <span asp-validation-for="Rooms" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+        </fieldset>
+        <br />
+        <div id="picDisplayContainer">
+            @if (!string.IsNullOrEmpty(Model.PicUrl))
+            {
+                <img class="img-thumbnail" id="picDisplay" src="@Model.PicUrl" />
+            }
+        </div>
+        <div class="form-group">
+            <label class="btn btn-light" asp-for="@Model.PicUrl">
+                <img src="~/icons/photo.svg"/>
+                <input type="file" name="file" id="PicUrl" />
+            </label>
+        </div>
+        <div class="form-group d-none">
+            <label asp-for="PicUrl" class="control-label"></label>
+            <input id="picUrlInput" type="hidden" asp-for="PicUrl" class="form-control" />
+        </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+        <br />
+        <div class="form-group row justify-content-between">
+            <label class="btn btn-light">
+                <img src="~/icons/book.svg" alt="" />
+                <input type="submit" value="Confirmer les modifications" />
+            </label>
+            <div>
+                <a class="btn btn-light" asp-action="Index">
+                    <img src="~/icons/list.svg" />
+                    Retour à la liste
+                </a>
+            </div>
+        </div>
+    </form>
 </div>
 
 @section Scripts {

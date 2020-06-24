@@ -8,16 +8,23 @@ using Microsoft.EntityFrameworkCore;
 using evaluation1.Data;
 using evaluation1.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace evaluation1.Controllers
 {
     public class HotelsController : Controller
     {
         private readonly Eval1DbContext _context;
+        private IWebHostEnvironment _env;
 
-        public HotelsController(Eval1DbContext context)
+
+        public HotelsController(Eval1DbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
+
         }
 
         // GET: Hotels
@@ -46,30 +53,6 @@ namespace evaluation1.Controllers
             return View(hotel);
         }
 
-        // GET: Hotels/Create
-        public IActionResult Create()
-        {
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "Name");
-            return View();
-        }
-
-        // POST: Hotels/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HotelId,Name,Phone,Email,Adress1,Adress2,CityId,Stars,Rooms")] Hotel hotel)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(hotel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "Name", hotel.CityId);
-            return View(hotel);
-        }
-
         // GET: Hotels/Edit/5
         [Authorize]
         [Authorize(Roles = "Admin")]
@@ -85,7 +68,7 @@ namespace evaluation1.Controllers
             {
                 return NotFound();
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "Name", hotel.CityId);
+            ViewBag.Cities = new SelectList(_context.Cities, "Id", "Name");
             return View(hotel);
         }
 
@@ -94,11 +77,25 @@ namespace evaluation1.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HotelId,Name,Phone,Email,Adress1,Adress2,CityId,Stars,Rooms")] Hotel hotel)
+        public async Task<IActionResult> Edit(int id, IFormFile file, [Bind("HotelId,Name,Phone,Email,Adress1,Adress2,Stars,Rooms,CityId, PicUrl")] Hotel hotel)
         {
             if (id != hotel.HotelId)
             {
                 return NotFound();
+            }
+
+            if (file != null)
+            {
+                // Upload the picture file
+                var webRoot = _env.WebRootPath;
+                string pic = Path.GetFileName(file.FileName);
+                string path = Path.Combine(webRoot, "images/", pic);
+
+                // file is uploaded
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
             }
 
             if (ModelState.IsValid)
@@ -121,38 +118,9 @@ namespace evaluation1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "CityId", "Name", hotel.CityId);
-            return View(hotel);
-        }
-
-        // GET: Hotels/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var hotel = await _context.Hotels
-                .Include(h => h.City)
-                .FirstOrDefaultAsync(m => m.HotelId == id);
-            if (hotel == null)
-            {
-                return NotFound();
-            }
+            ViewBag.Cities = new SelectList(_context.Cities, "Id", "Name");
 
             return View(hotel);
-        }
-
-        // POST: Hotels/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var hotel = await _context.Hotels.FindAsync(id);
-            _context.Hotels.Remove(hotel);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool HotelExists(int id)

@@ -4,63 +4,84 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>@Model.Name à @Model.City.Name </h1>
+    <div class="text-center">
+        <h1>@Model.Name à @Model.City.Name </h1>
+        @for (var i = 0; i < 5; i++)
+        {
+            if (i >= Model.Stars)
+            {
+                <img class="stars" alt="étoile vide" src="~/icons/emptyStar.svg" />
+            }
+            else
+            {
+                <img class="stars" alt="étoile pleine" src="~/icons/yellowStar.svg" />
+            }
+        }
 
+    </div>
+<br />
 <div class="container">
-    @if (!string.IsNullOrEmpty(Model.PicUrl))
-    {
-        <div class="col-7">
-            <img src="@Model.PicUrl" />
+    <div class="row">
+        @if (!string.IsNullOrEmpty(Model.PicUrl))
+        {
+            <img class="col-7" src="@Model.PicUrl" />
+        }
+        <div class="col-5 border-left border-dark">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Phone)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Phone)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Adress1)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Adress1)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Adress2)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Adress2)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.City)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.City.Name)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Stars)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Stars)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Rooms)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Rooms)
+                </dd>
+            </dl>
         </div>
-    }
-    <div class="col-5">
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Phone)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Phone)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Email)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Adress1)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Adress1)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Adress2)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Adress2)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.City)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.City.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Stars)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Stars)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Rooms)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Rooms)
-            </dd>
-        </dl>
     </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.HotelId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<hr />
+<div class="row justify-content-between">
+    <a class="btn btn-lg btn-light" href="#">
+        <img src="~/icons/book.svg"/>
+        Réserver
+    </a>
+    <a class="btn btn-lg btn-light" asp-controller="Cities" asp-action="Details" asp-route-id="@Model.CityId">
+        <img src="~/icons/list.svg" />
+        Revenir à la liste
+    </a>
 </div>

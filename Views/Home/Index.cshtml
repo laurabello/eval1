@@ -4,12 +4,12 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Bienvenue</h1>
+    <h1 class="display-4">Bienvenue!</h1>
     <h2 class="display-4">Dans quelle ville souhaitez-vous séjourner?</h2>
 </div>
-<section class="container">
+<section class="containerr">
     @foreach(City city in Model)
     {
-        <a class="btn btn-light" asp-action="Details" asp-controller="Cities" asp-route-id="@city.CityId">@city.Name</a>
+        <a class="btn btn-secondary btn-lg m-5 px-5 py-3 btn-block" asp-action="Details" asp-controller="Cities" asp-route-id="@city.CityId">@city.Name</a>
     }
 </section>

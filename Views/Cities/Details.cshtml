@@ -4,34 +4,42 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>C'est parti pour @Model.Name !</h1>
-<h2>Voici les hôtels disponibles</h2>
-
-<div>
+    <div class="text-center">
+        <h1>C'est parti pour @Model.Name !</h1>
+        <h2>Voici les hôtels disponibles</h2>
+    </div>
+<br />
+<div class="card-group justify-content-between">
     @foreach (Hotel hotel in Model.Hotels)
     {
-    <div class="card" style="width: 18rem;">
-        @if (!string.IsNullOrEmpty(hotel.PicUrl))
-        {
-            <img class="card-img-top" src="@hotel.PicUrl" alt="">
-        }
-        <div class="card-body">
-            <h5 class="card-title">@hotel.Name</h5>
-            <div>
-                @for (var i = 0; i < 5; i++)
-                {
-                    if (i >= hotel.Stars)
+        <div class="card col-4" style="width: 18rem;">
+            @if (!string.IsNullOrEmpty(hotel.PicUrl))
+            {
+                <img class="card-img-top" src="@hotel.PicUrl" alt="">
+            }
+            <div class="card-body row">
+                <div class="col-6">
+                    <p class="card-title h6">@hotel.Name</p>
+
+                    @for (var i = 0; i < 5; i++)
                     {
-                        <img alt="étoile vide" src="~/icons/emptyStar.svg" />
+                        if (i >= hotel.Stars)
+                        {
+                            <img alt="étoile vide" src="~/icons/emptyStar.svg" />
+                        }
+                        else
+                        {
+                            <img alt="étoile pleine" src="~/icons/yellowStar.svg" />
+                        }
                     }
-                    else
-                    {
-                        <img alt="étoile pleine" src="~/icons/yellowStar.svg" />
-                    }
-                }
+                </div>
+                <div class="col-6">
+                    <a class="btn btn-lg btn-light" asp-action="Details" asp-controller="Hotels" asp-route-id="@hotel.HotelId">
+                        <img src="~/icons/details.svg" />
+                        Détails
+                    </a>
+                </div>
             </div>
-            <a asp-action="Details" asp-controller="Hotels" asp-route-id="@hotel.HotelId">Détails</a>
         </div>
-    </div>
     }
 </div>

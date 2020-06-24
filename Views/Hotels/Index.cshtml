@@ -1,77 +1,47 @@
 ﻿@model IEnumerable<evaluation1.Models.Hotel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Liste des hôtels";
 }
 
-<h1>Index</h1>
+<div class="text-center">
+    <h1>Bienvenue dans votre espace hôtelier!</h1>
+    <h2>Ici vous pouvez modifier vos hôtels.</h2>
+</div>
+<br />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Adress1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Adress2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Stars)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rooms)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Adress1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Adress2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Stars)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rooms)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.HotelId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.HotelId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div  class="d-flex flex-wrap ">
+    @foreach (Hotel hotel in Model)
+    {
+        <div class="card col-4" style="width: 18rem;">
+            @if (!string.IsNullOrEmpty(hotel.PicUrl))
+            {
+                <img class="card-img-top" src="@hotel.PicUrl" alt="">
+            }
+            <div class="card-body row">
+                <div class="col-5">
+                    <p class="card-title h6">@hotel.Name</p>
+                    <div>
+                        @for (var i = 0; i < 5; i++)
+                        {
+                            if (i >= hotel.Stars)
+                            {
+                                <img alt="étoile vide" src="~/icons/emptyStar.svg" />
+                            }
+                            else
+                            {
+                                <img alt="étoile pleine" src="~/icons/yellowStar.svg" />
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-7">
+                    <a  class="btn btn-lg btn-light" asp-action="Edit" asp-route-id="@hotel.HotelId">
+                        <img src="~/icons/edit.svg" />
+                        Modifier
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
